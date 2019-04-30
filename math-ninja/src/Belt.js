@@ -1,15 +1,6 @@
 import React from 'react';
+import {BELTS} from './data';
 
-const BELTS = [
-    {color: "white", hex: "#ffffff"},
-    {color: "gold", hex: "#ffd700"},
-    {color: "green", hex: "#008000"},
-    {color: "purple", hex: "#800080"},
-    {color: "blue", hex: "#0000ff"},
-    {color: "red", hex: "#ff0000"},
-    {color: "brown", hex: "#a52a2a"},
-    {color: "black", hex: "#000000"}
-  ];
 
 const Belt = ({beltLevel}) => {
     return (

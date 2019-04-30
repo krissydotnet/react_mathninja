@@ -5,8 +5,11 @@ import Belt from './Belt';
 import Level from './Level';
 import Score from './Score';
 import Banner from './Banner';
+import {BELTS, LEVEL, dojo } from './data';
 
-const LEVEL_SIZE = 15;
+
+const BELT_SIZE = 15;
+
 
 
 class App extends Component {
@@ -21,31 +24,45 @@ class App extends Component {
     belt: 0,
     correct: false,
     bannerId: "",
-    displayBanner: false
+    displayNewBelt: false
   }
   
 
   render() {
-
+    
     const checkAnswer = (answer) => {
  
       if ((answer!=="") && (correctAnswer(answer))) {
         this.setState(prevState => {
-            //Reset level to zero when complete level
-            let currentLevel = (prevState.level === LEVEL_SIZE) ? 0: prevState.level + 1;
-            let currentdisplayBanner = (prevState.level === LEVEL_SIZE)? true: false;
-            //Go to next belt when complete level
-            let currentBelt = (prevState.level === LEVEL_SIZE)? prevState.belt + 1 : prevState.belt;
-            //Increment score if level hasn't been reset
-            let currentScore = (currentLevel === 0)? 0 : prevState.score + 1;
+            let currentBelt = prevState.belt;
+            let currentLevel = prevState.level;
+            let currentWrong = prevState.wrong;
+            let NewBelt = false;
+            let NewLevel = false;
+             //Reset score to zero when complete level
+            let currentScore = (prevState.score ===  BELT_SIZE) ? 0: prevState.score + 1;
+
+            if (currentScore === 0) {
+              // If score reset then go to next belt level
+              currentWrong = 0;
+              currentBelt++;
+              NewBelt = true;
             
-            //Reset wrong if level has been reset
-            let currentWrong = (currentLevel === 0)? 0 : prevState.wrong;
+              if (currentBelt === BELTS.length) {
+                //If completed all belts go to next level
+                currentBelt = 0;
+                currentLevel++;
+                NewLevel++;
+              }
+            }
+        
+
           return {score: currentScore,
                   level: currentLevel,
                   belt: currentBelt,
                   wrong: currentWrong,
-                  displayBanner: currentdisplayBanner,
+                  displayNewBelt: NewBelt,
+                  displayNewLevel: NewLevel,
                   correct: true                 //change state to correct = true
           }
        });
@@ -53,14 +70,13 @@ class App extends Component {
           this.setState(prevState => {
             //When wrong answer decrement score if score > 0
             let currentScore = (prevState.score > 0)? prevState.score - 1: prevState.score;
-            //When wrong answer decrement leve if level > 0
-            let currentLevel = (prevState.level > 0)? prevState.level - 1: prevState.level;
             //Increment wrong
-            let currentWrong = prevState + 1;
+            let currentWrong = prevState.wrong + 1;
             return {
               score: currentScore,
-              level: currentLevel,
               wrong: currentWrong,
+              displayNewBelt: false,
+              displayNewLevel: false,
               correct: false                  // change state to correct = false
             }
           })
@@ -99,7 +115,8 @@ class App extends Component {
         <main id="main-container">
             <FlashCard num1={this.state.num1} num2={this.state.num2} handleChange={checkAnswer} operator={this.state.operator} />
             <Score correct={this.state.correct} score={this.state.score} wrong={this.state.wrong}  />
-            {this.state.displayBanner}
+            {!this.state.displayNewBelt || <Banner id="new-belt" />}
+            {!this.state.displayNewLevel || <Banner id="new-level"/>}
         </main>
       </div>
     );
