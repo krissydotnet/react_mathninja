@@ -1,3 +1,27 @@
+export class User {
+    constructor(username) {
+        this.username = username;
+        this.currentLevel = 0;
+        this.currentBelt = 0;
+        this.currentScore = 0;
+        this.currentWrong = 0;
+    }
+
+
+
+    // saveUserData = (belt, level, score, wrong) => {
+    //     this.currentBelt = belt;
+    //     this.currentLevel = level;
+    //     this.currentScore = score;
+    //     this.currentWrong = wrong;
+    //     console.log("Saving user data");
+    //     localStorage.saveData = JSON.stringify(this.User);
+    //   }
+    //   resetUserData= () => {
+    //     localStorage.clear();
+    //   }
+ }
+
 export const BELTS = [
     {color: "white", hex: "#ffffff"},
     {color: "gold", hex: "#ffd700"},
@@ -15,7 +39,7 @@ export const BELTS = [
     "Intermediate",
     "Expert"
   ];
-  
+
 
   export const dojo = [
     {level: LEVEL[0],
